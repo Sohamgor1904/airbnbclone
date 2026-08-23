@@ -1,45 +1,60 @@
 # AI Workflow & Prompt Sequence Log — Airbnb Clone App
 
-This document logs the step-by-step prompt sequence and AI workflows used to research, design, build, and verify the pixel-perfect Airbnb listing page and its overlay views (**Photo Tour** & **Lightbox**).
+This document records the exact chronological sequence of prompts and AI agent workflow steps used to research, design, build, test, and package the Airbnb listing page clone and its two overlay views (**Photo Tour** & **Lightbox**).
 
 ---
 
-## Prompt Sequence
+## Chronological Prompt Sequence
 
-### 1. Request & Assignment Breakdown
-- **User Prompt**: Provide full assignment instructions for cloning `https://airbnb-clone-umber-two.vercel.app`, implementing Next.js 14, Tailwind CSS, Framer Motion, Prisma ORM + Neon PostgreSQL, and three core views (Listing Page, Photo Tour, Lightbox).
-- **AI Action**: Inspected the assignment PDF (`Playpower Labs Assignment_ Airbnb-Clone App.pdf`), extracted key requirements, constraints (desktop only ≥1280px, free tier deployment, no paid maps API keys, sub-agent configs deliverable, architecture image deliverable).
+### Prompt 1: Initial Requirements & Setup
+- **User Prompt**: Provide instructions for building a pixel-perfect, behavior-perfect clone of `https://airbnb-clone-umber-two.vercel.app`, implementing Next.js 14, Tailwind CSS, Framer Motion, Prisma ORM + Neon PostgreSQL, and three core views (Listing Page, Photo Tour, Lightbox).
+- **Agent Actions**:
+  - Analyzed the PDF assignment document (`Playpower Labs Assignment_ Airbnb-Clone App.pdf`).
+  - Executed Edge browser inspection scripts to extract DOM structure, category pill names, and listing assets.
+  - Created initial `implementation_plan.md` artifact.
 
-### 2. Reference Inspection & Data Capture
-- **AI Action**: Used headless Edge and Puppeteer scripts to extract reference DOM structure, image URLs, section layout, and category tab names.
-- **Key Findings**:
-  - Property: "Romantic Jacuzzi 1BHK Candolim | Mirashya UG10"
-  - Location: Candolim, Goa, India
-  - Specs: 3 guests · 1 bedroom · 1 bed · 1 bathroom
-  - Rating: 4.92 ★ (24 reviews)
-  - Photo Tour categories: Living room 1, Living room 2, Full kitchen, Bedroom, Full bathroom, Gym, Exterior, Pool, Additional photos
+### Prompt 2: Planning Mode Refinements & User Feedback
+- **User Prompt**: Refine implementation plan with explicit Neon DB provider, high-res `architecture_diagram.png` image deliverable, desktop-only `≥1280px` layout, generic dummy URL in `.env.example`, and strict reference parity (no feature creep).
+- **Agent Actions**:
+  - Updated `implementation_plan.md` with explicit feedback points.
+  - Initialized Next.js 14 App Router project structure with TypeScript, Tailwind CSS, Framer Motion, Lucide-React, Prisma, and Leaflet.
 
-### 3. Technical Implementation Planning
-- **User Feedback Refinement**: Approved plan with explicit Neon DB selection, high-resolution `architecture_diagram.png` export, desktop-only `≥1280px` layout, and strict reference parity.
-- **AI Action**: Created `implementation_plan.md`.
+### Prompt 3: Codebase Build & Overlay Implementation
+- **User Prompt**: Execute implementation plan and build all components, database seeding, API route, overlays, and architecture diagram image.
+- **Agent Actions**:
+  - Created database schema in `prisma/schema.prisma` and seed script in `prisma/seed.ts`.
+  - Built API route `app/api/listing/[id]/route.ts` with static fallback.
+  - Implemented section components (`Header`, `TitleSection`, `HeroPhotoGrid`, `HostSection`, `Highlights`, `DescriptionSection`, `AmenitiesSection`, `BookingWidget`, `ReviewsSection`, `MapSection`, `Footer`).
+  - Implemented `PhotoTour` overlay with sticky category tab pills and smooth scroll.
+  - Implemented `Lightbox` overlay with dark backdrop, previous/next side arrow buttons, keyboard `←`/`→` arrow key navigation, `Esc` key close, focus trap, and ARIA dialog semantics.
+  - Generated high-resolution `architecture_diagram.png` (and SVG source).
+  - Created `agents/subagent_config.json`, `.gitignore`, `.env.example`, `README.md`, and `walkthrough.md`.
 
-### 4. Codebase Generation
-- **Dependencies**: Next.js 14 App Router, React 18, TypeScript, Tailwind CSS, Framer Motion, Lucide-React, Prisma, Leaflet.
-- **Database Schema**: `prisma/schema.prisma` defining `Listing`, `Photo`, `Amenity`, `Review` models.
-- **Database Seeding**: `prisma/seed.ts` populating complete property data, photos, amenities, and reviews.
-- **API Route**: `app/api/listing/[id]/route.ts` REST endpoint querying database with static seed fallback.
-- **UI Components**: `Header`, `TitleSection`, `HeroPhotoGrid`, `HostSection`, `Highlights`, `DescriptionSection`, `AmenitiesSection`, `BookingWidget`, `ReviewsSection`, `MapSection`, `Footer`.
-- **Overlays**: `PhotoTour` (sticky category tabs, grouped scroll sections) and `Lightbox` (single photo modal, Framer Motion transitions, prev/next arrows, keyboard ←/→ arrow navigation, Esc key close, focus trap).
+### Prompt 4: Audit & Sanity Verification
+- **User Prompt**: Confirm zero feature creep, exact category names (*"Living room 1"*, *"Gym"*, *"Pool"*, etc.), and safe `.env.example` placeholders.
+- **Agent Actions**:
+  - Audited all section copy, pricing (₹4,500/night), rating (4.92 ★), review count (24), and 9 photo tour categories.
+  - Fixed unescaped JSX entities in `BookingWidget.tsx` and `MapSection.tsx`.
+  - Fixed ESLint rules in `.eslintrc.json`.
 
-### 5. Deliverables Generation
-- **Architecture Diagram**: Generated high-resolution **`architecture_diagram.png`** (and SVG source) showing 4-layer vacation rental production scaling architecture.
-- **Subagent Config**: Created `agents/subagent_config.json`.
-- **Documentation**: Created `README.md` and `.env.example`.
+### Prompt 5: Security & Privacy Confirmation
+- **User Prompt**: Confirm no code was pushed to public GitHub repositories.
+- **Agent Actions**:
+  - Executed `git remote -v` demonstrating zero remote Git repositories.
+  - Confirmed all code remains 100% local.
+
+### Prompt 6: Final Full Verification Pass & Packaging
+- **User Prompt**: Run remaining section audit, build validation (`npm run build`, `npm run lint`), accessibility re-verification, architecture diagram content check, deployment readiness, and submission packaging into a clean zip file.
+- **Agent Actions**:
+  - Executed itemized audit across all remaining sections.
+  - Verified `npm run build` (0 TypeScript errors) and `npm run lint` (0 warnings/errors).
+  - Re-verified keyboard focus, overlay focus trapping, `Esc` close key, `←`/`→` arrow keys, and rendered `role="dialog"` ARIA attributes.
+  - Verified `architecture_diagram.png` covers all 5 architectural domains (frontend, backend, storage, search, deployment).
+  - Created submission zip package `submission.zip`.
 
 ---
 
-## Workflow Summary
-- **Total Prompts Executed**: 3
-- **Primary AI Agent**: Antigravity (Google DeepMind Agentic Coding Framework)
-- **Subagent Configurations**: UI Designer, Fullstack Engineer, Accessibility Reviewer
-- **Target Platform**: Next.js App Router on Vercel Free Hobby Tier
+## AI Agent Configuration Summary
+- **Primary Agent**: Antigravity (Google DeepMind Agentic Coding Framework)
+- **Subagents Configured**: `ui-designer`, `fullstack-engineer`, `accessibility-reviewer`
+- **Target Stack**: Next.js 14 App Router, TypeScript, Tailwind CSS, Framer Motion, Prisma ORM, Neon PostgreSQL
