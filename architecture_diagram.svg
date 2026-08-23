@@ -1,74 +1,192 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" style="background-color: #0f172a; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-  <!-- Title Header -->
-  <rect x="0" y="0" width="1200" height="80" fill="#1e293b" />
-  <text x="600" y="48" fill="#ffffff" font-size="24" font-weight="bold" text-anchor="middle">Airbnb Production Vacation-Rental Platform — Scaling Architecture</text>
-  
-  <!-- Outer Containers / Layers -->
-  <!-- Layer 1: Client & Edge CDN -->
-  <rect x="40" y="110" width="1120" height="110" rx="12" fill="#1e293b" stroke="#38bdf8" stroke-width="2" stroke-dasharray="6,6" />
-  <text x="60" y="135" fill="#38bdf8" font-size="14" font-weight="bold">1. CLIENT &amp; GLOBAL EDGE CDN LAYER</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000" style="background:#ffffff; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <defs>
+    <!-- Drop Shadow Filter -->
+    <filter id="dropShadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="2" dy="3" stdDeviation="3" flood-color="#000000" flood-opacity="0.12"/>
+    </filter>
+    
+    <!-- Grid Pattern (draw.io style background) -->
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#f0f0f0" stroke-width="1"/>
+    </pattern>
 
-  <rect x="80" y="150" width="220" height="50" rx="8" fill="#0284c7" />
-  <text x="190" y="180" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle">Desktop Web (Next.js 14)</text>
+    <!-- Arrow Marker -->
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#4D4D4D"/>
+    </marker>
+  </defs>
 
-  <rect x="340" y="150" width="220" height="50" rx="8" fill="#0284c7" />
-  <text x="450" y="180" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle">Mobile Web &amp; Apps</text>
+  <!-- Background Grid -->
+  <rect width="1600" height="1000" fill="url(#grid)" />
 
-  <rect x="600" y="150" width="240" height="50" rx="8" fill="#0369a1" />
-  <text x="720" y="180" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle">Vercel Edge / CloudFront CDN</text>
+  <!-- Diagram Title Header Bar -->
+  <rect x="40" y="30" width="1520" height="70" rx="8" fill="#ffffff" stroke="#d0d0d0" stroke-width="1.5" filter="url(#dropShadow)"/>
+  <text x="70" y="72" font-size="24" font-weight="700" fill="#222222">Airbnb Clone — System Architecture Diagram</text>
+  <text x="1320" y="70" font-size="14" font-weight="600" fill="#666666">draw.io Specification</text>
 
-  <rect x="870" y="150" width="250" height="50" rx="8" fill="#0369a1" />
-  <text x="995" y="180" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle">Static Asset Cache (S3 CDN)</text>
+  <!-- ==================== LAYER 1: CLIENT LAYER ==================== -->
+  <g transform="translate(60, 140)">
+    <rect width="440" height="790" rx="12" fill="#F8FAFC" stroke="#64748B" stroke-width="2" stroke-dasharray="6,6"/>
+    <!-- Header -->
+    <rect width="440" height="45" rx="12" fill="#DAE8FC" stroke="#6C8EBF" stroke-width="2"/>
+    <text x="220" y="28" font-size="16" font-weight="700" fill="#1E3A8A" text-anchor="middle">CLIENT / PRESENTATION LAYER</text>
 
-  <!-- Layer 2: API Gateway & Load Balancing -->
-  <rect x="40" y="250" width="1120" height="100" rx="12" fill="#1e293b" stroke="#f59e0b" stroke-width="2" stroke-dasharray="6,6" />
-  <text x="60" y="275" fill="#f59e0b" font-size="14" font-weight="bold">2. API GATEWAY &amp; LOAD BALANCING LAYER</text>
+    <!-- Sub Card 1: Browser -->
+    <rect x="25" y="70" width="390" height="150" rx="8" fill="#FFFFFF" stroke="#6C8EBF" stroke-width="1.5" filter="url(#dropShadow)"/>
+    <rect x="25" y="70" width="390" height="32" rx="8" fill="#E1D5E7" stroke="#9673A6" stroke-width="1"/>
+    <text x="40" y="91" font-size="13" font-weight="700" fill="#4C1D95">Desktop Viewport (≥1280px)</text>
+    <text x="40" y="125" font-size="12" font-weight="600" fill="#333333">• Single Airbnb Listing Page (app/listing/[id])</text>
+    <text x="40" y="150" font-size="12" font-weight="600" fill="#333333">• Photo Tour Category Overlay (Modal)</text>
+    <text x="40" y="175" font-size="12" font-weight="600" fill="#333333">• Lightbox Single Photo Viewer (Modal)</text>
+    <text x="40" y="200" font-size="12" font-weight="600" fill="#333333">• Sticky Sub-Nav &amp; Booking Widget</text>
 
-  <rect x="250" y="290" width="320" height="45" rx="8" fill="#d97706" />
-  <text x="410" y="318" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle">Nginx / Kong API Gateway</text>
+    <!-- Sub Card 2: UI Tech Stack -->
+    <rect x="25" y="245" width="390" height="230" rx="8" fill="#FFFFFF" stroke="#6C8EBF" stroke-width="1.5" filter="url(#dropShadow)"/>
+    <rect x="25" y="245" width="390" height="32" rx="8" fill="#DAE8FC" stroke="#6C8EBF" stroke-width="1"/>
+    <text x="40" y="266" font-size="13" font-weight="700" fill="#1E3A8A">Next.js 14 App Router (React 18)</text>
+    <text x="40" y="300" font-size="12" fill="#333333"><tspan font-weight="700">Tailwind CSS:</tspan> Airbnb Token Palette (#FF385C)</text>
+    <text x="40" y="330" font-size="12" fill="#333333"><tspan font-weight="700">Framer Motion:</tspan> Smooth Modal Overlay Anims</text>
+    <text x="40" y="360" font-size="12" fill="#333333"><tspan font-weight="700">Lucide React:</tspan> Pixel-Perfect Airbnb Icons</text>
+    <text x="40" y="390" font-size="12" fill="#333333"><tspan font-weight="700">React Leaflet:</tspan> Interactive OpenStreetMap</text>
+    <text x="40" y="420" font-size="12" fill="#333333"><tspan font-weight="700">Shared Date State:</tspan> Calendar &amp; Widget Sync</text>
 
-  <rect x="630" y="290" width="320" height="45" rx="8" fill="#d97706" />
-  <text x="790" y="318" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle">Rate Limiting &amp; Auth Middleware</text>
+    <!-- Sub Card 3: Interactive Features -->
+    <rect x="25" y="500" width="390" height="255" rx="8" fill="#FFFFFF" stroke="#6C8EBF" stroke-width="1.5" filter="url(#dropShadow)"/>
+    <rect x="25" y="500" width="390" height="32" rx="8" fill="#FFF2CC" stroke="#D6B656" stroke-width="1"/>
+    <text x="40" y="521" font-size="13" font-weight="700" fill="#78350F">Interactive Section Components</text>
+    <text x="40" y="555" font-size="12" fill="#333333">• AvailabilityCalendar (2-Month Dual Grid)</text>
+    <text x="40" y="580" font-size="12" fill="#333333">• ReviewsSection (6-Metric Bar Breakdown)</text>
+    <text x="40" y="605" font-size="12" fill="#333333">• MeetYourHost (Host Card &amp; 8 Co-Hosts)</text>
+    <text x="40" y="630" font-size="12" fill="#333333">• WhereYouSleep (2-Column Room Cards)</text>
+    <text x="40" y="655" font-size="12" fill="#333333">• MapSection (Custom House Pin &amp; Highlights)</text>
+    <text x="40" y="680" font-size="12" fill="#333333">• ThingsToKnow (3-Column Policy Modals)</text>
+    <text x="40" y="705" font-size="12" fill="#333333">• MoreStaysNearby (5-Card Carousel)</text>
+  </g>
 
-  <!-- Layer 3: Microservices Backend -->
-  <rect x="40" y="380" width="1120" height="160" rx="12" fill="#1e293b" stroke="#10b981" stroke-width="2" stroke-dasharray="6,6" />
-  <text x="60" y="405" fill="#10b981" font-size="14" font-weight="bold">3. BACKEND MICROSERVICES LAYER (Next.js / Node.js Cluster)</text>
+  <!-- ==================== LAYER 2: CDN / EDGE ==================== -->
+  <g transform="translate(540, 140)">
+    <rect width="250" height="790" rx="12" fill="#F8FAFC" stroke="#64748B" stroke-width="2" stroke-dasharray="6,6"/>
+    <!-- Header -->
+    <rect width="250" height="45" rx="12" fill="#FFF2CC" stroke="#D6B656" stroke-width="2"/>
+    <text x="125" y="28" font-size="16" font-weight="700" fill="#78350F" text-anchor="middle">EDGE &amp; NETWORK</text>
 
-  <rect x="80" y="430" width="230" height="80" rx="8" fill="#059669" />
-  <text x="195" y="465" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle">Listing Service</text>
-  <text x="195" y="485" fill="#d1fae5" font-size="11" text-anchor="middle">GET /api/listing/[id]</text>
+    <!-- Card 1 -->
+    <rect x="20" y="70" width="210" height="210" rx="8" fill="#FFFFFF" stroke="#D6B656" stroke-width="1.5" filter="url(#dropShadow)"/>
+    <rect x="20" y="70" width="210" height="32" rx="8" fill="#FFF2CC" stroke="#D6B656" stroke-width="1"/>
+    <text x="32" y="91" font-size="13" font-weight="700" fill="#78350F">Vercel Edge Network</text>
+    <text x="32" y="125" font-size="12" fill="#333333">• Global Anycast DNS</text>
+    <text x="32" y="150" font-size="12" fill="#333333">• Automatic SSL/TLS</text>
+    <text x="32" y="175" font-size="12" fill="#333333">• Static Page Edge Cache</text>
+    <text x="32" y="200" font-size="12" fill="#333333">• Smart Compression (Brotli)</text>
+    <text x="32" y="225" font-size="12" fill="#333333">• HTTP/2 &amp; HTTP/3</text>
 
-  <rect x="340" y="430" width="230" height="80" rx="8" fill="#059669" />
-  <text x="455" y="465" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle">Booking &amp; Calendar</text>
-  <text x="455" y="485" fill="#d1fae5" font-size="11" text-anchor="middle">Availability &amp; Pricing Engine</text>
+    <!-- Card 2 -->
+    <rect x="20" y="310" width="210" height="210" rx="8" fill="#FFFFFF" stroke="#D6B656" stroke-width="1.5" filter="url(#dropShadow)"/>
+    <rect x="20" y="310" width="210" height="32" rx="8" fill="#E1D5E7" stroke="#9673A6" stroke-width="1"/>
+    <text x="32" y="331" font-size="13" font-weight="700" fill="#4C1D95">Routing Engine</text>
+    <text x="32" y="365" font-size="12" fill="#333333">• Dynamic SSR Routes</text>
+    <text x="32" y="390" font-size="12" fill="#333333">• API Endpoint Proxies</text>
+    <text x="32" y="415" font-size="12" fill="#333333">• Static Fallback Engine</text>
+    <text x="32" y="440" font-size="12" fill="#333333">• CORS &amp; Security Headers</text>
+    <text x="32" y="465" font-size="12" fill="#333333">• Route Memoization</text>
 
-  <rect x="600" y="430" width="230" height="80" rx="8" fill="#059669" />
-  <text x="715" y="465" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle">Search &amp; Map Service</text>
-  <text x="715" y="485" fill="#d1fae5" font-size="11" text-anchor="middle">Geo-spatial indexing</text>
+    <!-- Card 3 -->
+    <rect x="20" y="550" width="210" height="205" rx="8" fill="#FFFFFF" stroke="#D6B656" stroke-width="1.5" filter="url(#dropShadow)"/>
+    <rect x="20" y="550" width="210" height="32" rx="8" fill="#D5E8D4" stroke="#82B366" stroke-width="1"/>
+    <text x="32" y="571" font-size="13" font-weight="700" fill="#14532D">Media CDNs</text>
+    <text x="32" y="605" font-size="12" fill="#333333">• Unsplash Photo CDN</text>
+    <text x="32" y="630" font-size="12" fill="#333333">• OpenStreetMap Tile CDN</text>
+    <text x="32" y="655" font-size="12" fill="#333333">• WebP Image Optimization</text>
+    <text x="32" y="680" font-size="12" fill="#333333">• High-Res Host Badges</text>
+  </g>
 
-  <rect x="860" y="430" width="260" height="80" rx="8" fill="#059669" />
-  <text x="990" y="465" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle">Reviews &amp; Ratings</text>
-  <text x="990" y="485" fill="#d1fae5" font-size="11" text-anchor="middle">Aggregation Pipeline</text>
+  <!-- ==================== LAYER 3: SERVERLESS API & ORM ==================== -->
+  <g transform="translate(830, 140)">
+    <rect width="390" height="790" rx="12" fill="#F8FAFC" stroke="#64748B" stroke-width="2" stroke-dasharray="6,6"/>
+    <!-- Header -->
+    <rect width="390" height="45" rx="12" fill="#D5E8D4" stroke="#82B366" stroke-width="2"/>
+    <text x="195" y="28" font-size="16" font-weight="700" fill="#14532D" text-anchor="middle">SERVERLESS API &amp; PRISMA ORM</text>
 
-  <!-- Layer 4: Storage & Database Layer -->
-  <rect x="40" y="570" width="1120" height="180" rx="12" fill="#1e293b" stroke="#8b5cf6" stroke-width="2" stroke-dasharray="6,6" />
-  <text x="60" y="595" fill="#8b5cf6" font-size="14" font-weight="bold">4. DATA STORAGE &amp; CACHING LAYER</text>
+    <!-- Sub Card 1: Next.js API Routes -->
+    <rect x="20" y="70" width="350" height="220" rx="8" fill="#FFFFFF" stroke="#82B366" stroke-width="1.5" filter="url(#dropShadow)"/>
+    <rect x="20" y="70" width="350" height="32" rx="8" fill="#D5E8D4" stroke="#82B366" stroke-width="1"/>
+    <text x="35" y="91" font-size="13" font-weight="700" fill="#14532D">Next.js API Route Handlers</text>
+    <text x="35" y="125" font-size="12" fill="#333333"><tspan font-weight="700">Endpoint:</tspan> GET /api/listing/[id]</text>
+    <text x="35" y="155" font-size="12" fill="#333333"><tspan font-weight="700">Execution:</tspan> Node.js 18+ Serverless Runtime</text>
+    <text x="35" y="185" font-size="12" fill="#333333"><tspan font-weight="700">Config:</tspan> export const dynamic = 'force-dynamic'</text>
+    <text x="35" y="215" font-size="12" fill="#333333"><tspan font-weight="700">Resilience:</tspan> Try/Catch with Static Fallback Payload</text>
+    <text x="35" y="245" font-size="12" fill="#333333"><tspan font-weight="700">Payload:</tspan> Relational Listing, Photos, Rooms, Reviews</text>
 
-  <rect x="80" y="620" width="240" height="100" rx="8" fill="#6d28d9" />
-  <text x="200" y="655" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle">Neon PostgreSQL (Primary)</text>
-  <text x="200" y="675" fill="#ddd6fe" font-size="11" text-anchor="middle">Prisma ORM · Transactional DB</text>
-  <text x="200" y="695" fill="#ddd6fe" font-size="11" text-anchor="middle">Listings, Hosts, Reviews, Amenities</text>
+    <!-- Sub Card 2: Prisma ORM Singleton -->
+    <rect x="20" y="315" width="350" height="230" rx="8" fill="#FFFFFF" stroke="#82B366" stroke-width="1.5" filter="url(#dropShadow)"/>
+    <rect x="20" y="315" width="350" height="32" rx="8" fill="#E1D5E7" stroke="#9673A6" stroke-width="1"/>
+    <text x="35" y="336" font-size="13" font-weight="700" fill="#4C1D95">Prisma ORM Client v5 (lib/prisma.ts)</text>
+    <text x="35" y="370" font-size="12" fill="#333333">• Singleton Pattern (Prevents Conn Leaks)</text>
+    <text x="35" y="395" font-size="12" fill="#333333">• Strongly Typed Schema Models</text>
+    <text x="35" y="420" font-size="12" fill="#333333">• Relational Eager Loading (include: { photos: true })</text>
+    <text x="35" y="445" font-size="12" fill="#333333">• Auto Postinstall Generation (prisma generate)</text>
+    <text x="35" y="470" font-size="12" fill="#333333">• Seed Script Engine (prisma db seed)</text>
+    <text x="35" y="495" font-size="12" fill="#333333">• Query Engine (.dll / .so Native Binary)</text>
 
-  <rect x="350" y="620" width="240" height="100" rx="8" fill="#6d28d9" />
-  <text x="470" y="655" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle">Read Replicas (Neon)</text>
-  <text x="470" y="675" fill="#ddd6fe" font-size="11" text-anchor="middle">Auto-scaling read-only DBs</text>
+    <!-- Sub Card 3: Database Models -->
+    <rect x="20" y="565" width="350" height="190" rx="8" fill="#FFFFFF" stroke="#82B366" stroke-width="1.5" filter="url(#dropShadow)"/>
+    <rect x="20" y="565" width="350" height="32" rx="8" fill="#F8CECC" stroke="#B85450" stroke-width="1"/>
+    <text x="35" y="586" font-size="13" font-weight="700" fill="#7F1D1D">Prisma Schema Models</text>
+    <text x="35" y="620" font-size="12" fill="#333333">• Listing (title, price, specs, rating, location)</text>
+    <text x="35" y="645" font-size="12" fill="#333333">• Photo (url, category, caption, order)</text>
+    <text x="35" y="670" font-size="12" fill="#333333">• Room (name, detail, photoUrl)</text>
+    <text x="35" y="695" font-size="12" fill="#333333">• Review (authorName, avatar, tenure, scores)</text>
+    <text x="35" y="720" font-size="12" fill="#333333">• CoHost (name, avatar, initial) &amp; NearbyListing</text>
+  </g>
 
-  <rect x="620" y="620" width="240" height="100" rx="8" fill="#7c3aed" />
-  <text x="740" y="655" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle">Redis Cache Cluster</text>
-  <text x="740" y="675" fill="#ddd6fe" font-size="11" text-anchor="middle">In-memory caching for listings</text>
-  <text x="740" y="695" fill="#ddd6fe" font-size="11" text-anchor="middle">Session &amp; Rate-limit store</text>
+  <!-- ==================== LAYER 4: DATABASE ==================== -->
+  <g transform="translate(1260, 140)">
+    <rect width="280" height="790" rx="12" fill="#F8FAFC" stroke="#64748B" stroke-width="2" stroke-dasharray="6,6"/>
+    <!-- Header -->
+    <rect width="280" height="45" rx="12" fill="#F8CECC" stroke="#B85450" stroke-width="2"/>
+    <text x="140" y="28" font-size="16" font-weight="700" fill="#7F1D1D" text-anchor="middle">DATABASE LAYER</text>
 
-  <rect x="890" y="620" width="240" height="100" rx="8" fill="#7c3aed" />
-  <text x="1010" y="655" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle">Elasticsearch / Algolia</text>
-  <text x="1010" y="675" fill="#ddd6fe" font-size="11" text-anchor="middle">Geo-bounding box search</text>
+    <!-- Card 1: Neon Postgres -->
+    <rect x="20" y="70" width="240" height="320" rx="8" fill="#FFFFFF" stroke="#B85450" stroke-width="1.5" filter="url(#dropShadow)"/>
+    <rect x="20" y="70" width="240" height="32" rx="8" fill="#F8CECC" stroke="#B85450" stroke-width="1"/>
+    <text x="32" y="91" font-size="13" font-weight="700" fill="#7F1D1D">Neon PostgreSQL</text>
+    <text x="32" y="125" font-size="12" fill="#333333">• Serverless Postgres DB</text>
+    <text x="32" y="150" font-size="12" fill="#333333">• Auto-Scaling Compute</text>
+    <text x="32" y="175" font-size="12" fill="#333333">• Connection Pooling</text>
+    <text x="32" y="200" font-size="12" fill="#333333">• SSL Require Mode</text>
+    <text x="32" y="225" font-size="12" fill="#333333">• Foreign Key Cascades</text>
+    <text x="32" y="250" font-size="12" fill="#333333">• High Availability</text>
+    <text x="32" y="275" font-size="12" fill="#333333">• Automated Backups</text>
+    <text x="32" y="300" font-size="12" fill="#333333">• 100% Postgres Match</text>
+    <text x="32" y="325" font-size="12" fill="#333333">• Instant Point-In-Time</text>
+    <text x="32" y="350" font-size="12" fill="#333333">• Zero Cold Starts</text>
+
+    <!-- Card 2: Environment Security -->
+    <rect x="20" y="420" width="240" height="335" rx="8" fill="#FFFFFF" stroke="#B85450" stroke-width="1.5" filter="url(#dropShadow)"/>
+    <rect x="20" y="420" width="240" height="32" rx="8" fill="#FFF2CC" stroke="#D6B656" stroke-width="1"/>
+    <text x="32" y="441" font-size="13" font-weight="700" fill="#78350F">Environment Security</text>
+    <text x="32" y="475" font-size="12" fill="#333333">• DATABASE_URL in Vercel</text>
+    <text x="32" y="505" font-size="12" fill="#333333">• Gitignored .env / .env.local</text>
+    <text x="32" y="535" font-size="12" fill="#333333">• .env.example Placeholder</text>
+    <text x="32" y="565" font-size="12" fill="#333333">• Non-committable Creds</text>
+    <text x="32" y="595" font-size="12" fill="#333333">• Zero Plaintext Passwords</text>
+    <text x="32" y="625" font-size="12" fill="#333333">• Encrypted Transports</text>
+    <text x="32" y="655" font-size="12" fill="#333333">• Private Repo Security</text>
+    <text x="32" y="685" font-size="12" fill="#333333">• Vercel Environment Scope</text>
+    <text x="32" y="715" font-size="12" fill="#333333">• Protected Connection</text>
+  </g>
+
+  <!-- ==================== CONNECTING ARROWS ==================== -->
+  <!-- Layer 1 -> Layer 2 -->
+  <line x1="500" y1="280" x2="540" y2="280" stroke="#4D4D4D" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="500" y1="460" x2="540" y2="460" stroke="#4D4D4D" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="500" y1="670" x2="540" y2="670" stroke="#4D4D4D" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- Layer 2 -> Layer 3 -->
+  <line x1="790" y1="280" x2="830" y2="280" stroke="#4D4D4D" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="790" y1="460" x2="830" y2="460" stroke="#4D4D4D" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- Layer 3 -> Layer 4 -->
+  <line x1="1220" y1="280" x2="1260" y2="280" stroke="#4D4D4D" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="1220" y1="460" x2="1260" y2="460" stroke="#4D4D4D" stroke-width="2.5" marker-end="url(#arrow)"/>
 </svg>
