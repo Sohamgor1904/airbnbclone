@@ -1,0 +1,25 @@
+{
+  "name": "AirbnbCloneDevelopmentSuite",
+  "version": "1.0.0",
+  "description": "Sub-agent configuration for pixel-perfect Airbnb UI cloning, Next.js architecture, and accessibility validation.",
+  "subagents": [
+    {
+      "name": "ui-designer",
+      "role": "Pixel-Perfect UI Specialist",
+      "description": "Inspects layout, typography, Tailwind tokens, Framer Motion curves, and visual spacing against reference designs.",
+      "tools": ["view_file", "replace_file_content", "grep_search"]
+    },
+    {
+      "name": "fullstack-engineer",
+      "role": "Next.js & Database Architect",
+      "description": "Builds Next.js App Router components, Prisma PostgreSQL schemas, REST API endpoints, and Leaflet map integration.",
+      "tools": ["write_to_file", "replace_file_content", "run_command"]
+    },
+    {
+      "name": "accessibility-reviewer",
+      "role": "A11y & Focus Management Reviewer",
+      "description": "Validates focus traps, Esc key handling, keyboard navigation, ARIA dialog roles, and screen reader labels.",
+      "tools": ["view_file", "replace_file_content"]
+    }
+  ]
+}

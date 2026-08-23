@@ -1,0 +1,77 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Listing {
+  id               String      @id @default(cuid())
+  title            String
+  description      String
+  propertyType     String      @default("Entire serviced apartment")
+  location         String      @default("Candolim, Goa, India")
+  rating           Float       @default(4.92)
+  reviewCount      Int         @default(24)
+  pricePerNight    Int         @default(4500)
+  cleaningFee      Int         @default(800)
+  serviceFee       Int         @default(600)
+  maxGuests        Int         @default(3)
+  bedrooms         Int         @default(1)
+  beds             Int         @default(1)
+  bathrooms        Float       @default(1)
+  isSuperhost      Boolean     @default(true)
+  hostName         String      @default("Mirashya")
+  hostAvatar       String
+  hostBio          String?
+  hostJoined       String      @default("March 2021")
+  hostResponseRate String      @default("100%")
+  hostResponseTime String      @default("within an hour")
+  lat              Float       @default(15.5177)
+  lng              Float       @default(73.7626)
+  photos           Photo[]
+  amenities        Amenity[]
+  reviews          Review[]
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+}
+
+model Photo {
+  id        String   @id @default(cuid())
+  listingId String
+  listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  url       String
+  alt       String
+  category  String   // e.g. "Living room 1", "Living room 2", "Full kitchen", "Bedroom", "Full bathroom", "Gym", "Exterior", "Pool", "Additional photos"
+  caption   String?
+  order     Int      @default(0)
+}
+
+model Amenity {
+  id        String   @id @default(cuid())
+  listingId String
+  listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  name      String
+  iconName  String
+  category  String   @default("General")
+  isTop     Boolean  @default(true)
+}
+
+model Review {
+  id                 String   @id @default(cuid())
+  listingId          String
+  listing            Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  authorName         String
+  authorAvatar       String
+  date               String
+  rating             Int      @default(5)
+  comment            String
+  cleanlinessScore   Float    @default(5.0)
+  accuracyScore      Float    @default(5.0)
+  communicationScore Float    @default(5.0)
+  locationScore      Float    @default(4.9)
+  checkinScore       Float    @default(5.0)
+  valueScore         Float    @default(4.9)
+}
