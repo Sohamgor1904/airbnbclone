@@ -2,18 +2,45 @@
 
 import React, { useEffect, useState } from 'react';
 import { Header } from '@/components/listing/Header';
+import { StickySubNav } from '@/components/listing/StickySubNav';
 import { TitleSection } from '@/components/listing/TitleSection';
 import { HeroPhotoGrid } from '@/components/listing/HeroPhotoGrid';
 import { HostSection } from '@/components/listing/HostSection';
 import { Highlights } from '@/components/listing/Highlights';
 import { DescriptionSection } from '@/components/listing/DescriptionSection';
+import { WhereYouSleep } from '@/components/listing/WhereYouSleep';
 import { AmenitiesSection } from '@/components/listing/AmenitiesSection';
 import { BookingWidget } from '@/components/listing/BookingWidget';
 import { ReviewsSection } from '@/components/listing/ReviewsSection';
 import { MapSection } from '@/components/listing/MapSection';
+import { MeetYourHost } from '@/components/listing/MeetYourHost';
+import { ThingsToKnow } from '@/components/listing/ThingsToKnow';
+import { MoreStaysNearby } from '@/components/listing/MoreStaysNearby';
 import { Footer } from '@/components/listing/Footer';
 import { PhotoTour } from '@/components/overlays/PhotoTour';
 import { Lightbox } from '@/components/overlays/Lightbox';
+
+interface Room {
+  id: string;
+  name: string;
+  detail: string;
+  photoUrl: string;
+}
+
+interface CoHost {
+  id: string;
+  name: string;
+  avatarUrl?: string | null;
+  initial?: string | null;
+}
+
+interface NearbyListing {
+  id: string;
+  title: string;
+  photoUrl: string;
+  pricePerNight: number;
+  rating: number;
+}
 
 interface ListingData {
   id: string;
@@ -24,6 +51,8 @@ interface ListingData {
   rating: number;
   reviewCount: number;
   pricePerNight: number;
+  totalStayPrice: number;
+  stayNights: number;
   cleaningFee: number;
   serviceFee: number;
   maxGuests: number;
@@ -31,8 +60,17 @@ interface ListingData {
   beds: number;
   bathrooms: number;
   isSuperhost: boolean;
+  isGuestFavourite: boolean;
   hostName: string;
   hostAvatar: string;
+  hostJoined: string;
+  hostReviewsCount: number;
+  hostRating: number;
+  hostYears: number;
+  hostBorn: string;
+  hostSchool: string;
+  hostResponseRate: string;
+  hostResponseTime: string;
   lat: number;
   lng: number;
   photos: Array<{
@@ -42,6 +80,7 @@ interface ListingData {
     category: string;
     caption?: string | null;
   }>;
+  rooms: Room[];
   amenities: Array<{
     id: string;
     name: string;
@@ -51,11 +90,15 @@ interface ListingData {
   reviews: Array<{
     id: string;
     authorName: string;
-    authorAvatar: string;
+    authorAvatar?: string | null;
+    authorInitial?: string | null;
+    authorTenure: string;
     date: string;
     rating: number;
     comment: string;
   }>;
+  coHosts: CoHost[];
+  nearbyListings: NearbyListing[];
 }
 
 export default function ListingPage({ params }: { params: { id: string } }) {
@@ -105,10 +148,19 @@ export default function ListingPage({ params }: { params: { id: string } }) {
     setIsLightboxOpen(true);
   };
 
+  const priceText = `₹${listing.totalStayPrice.toLocaleString('en-IN')} for ${listing.stayNights} nights`;
+
   return (
     <div className="min-h-screen flex flex-col bg-white">
       {/* Top Header */}
       <Header />
+
+      {/* Sticky Sub Nav (Appears on scroll past hero photos) */}
+      <StickySubNav
+        priceText={priceText}
+        rating={listing.rating}
+        reviewCount={listing.reviewCount}
+      />
 
       {/* Main Container */}
       <main className="mx-auto w-full max-w-[1280px] px-10 py-6 flex-1 space-y-6">
@@ -122,14 +174,16 @@ export default function ListingPage({ params }: { params: { id: string } }) {
         />
 
         {/* Hero 5-Photo Grid */}
-        <HeroPhotoGrid
-          photos={listing.photos}
-          onOpenPhotoTour={handleOpenPhotoTour}
-        />
+        <div id="hero-photos">
+          <HeroPhotoGrid
+            photos={listing.photos}
+            onOpenPhotoTour={handleOpenPhotoTour}
+          />
+        </div>
 
         {/* 2-Column Content Layout */}
         <div className="grid grid-cols-12 gap-16 pt-4">
-          {/* Left Column (Main Property Info) */}
+          {/* Left Column */}
           <div className="col-span-7 space-y-6">
             <HostSection
               propertyType={listing.propertyType}
@@ -142,11 +196,38 @@ export default function ListingPage({ params }: { params: { id: string } }) {
               isSuperhost={listing.isSuperhost}
             />
 
+            {/* Guest Favourite Small Banner */}
+            <div className="rounded-2xl border border-airbnb-border p-6 flex items-center justify-between shadow-sm">
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-1 font-bold text-airbnb-charcoal">
+                  <span>🏆</span>
+                  <span>Guest favourite</span>
+                </div>
+                <span className="text-sm text-airbnb-muted">
+                  One of the most loved homes on Airbnb, according to guests
+                </span>
+              </div>
+              <div className="flex items-center gap-4 border-l border-airbnb-border pl-6 text-right">
+                <div>
+                  <div className="text-lg font-extrabold text-airbnb-charcoal">
+                    {listing.rating.toFixed(2)} ★★★★★
+                  </div>
+                  <div className="text-xs text-airbnb-muted">
+                    {listing.reviewCount} Reviews
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <Highlights />
 
             <DescriptionSection description={listing.description} />
 
-            <AmenitiesSection amenities={listing.amenities} />
+            <WhereYouSleep rooms={listing.rooms} />
+
+            <div id="amenities">
+              <AmenitiesSection amenities={listing.amenities} />
+            </div>
           </div>
 
           {/* Right Column (Sticky Booking Widget) */}
@@ -174,6 +255,24 @@ export default function ListingPage({ params }: { params: { id: string } }) {
           lat={listing.lat}
           lng={listing.lng}
         />
+
+        <MeetYourHost
+          hostName={listing.hostName}
+          hostAvatar={listing.hostAvatar}
+          hostJoined={listing.hostJoined}
+          hostReviewsCount={listing.hostReviewsCount}
+          hostRating={listing.hostRating}
+          hostYears={listing.hostYears}
+          hostBorn={listing.hostBorn}
+          hostSchool={listing.hostSchool}
+          hostResponseRate={listing.hostResponseRate}
+          hostResponseTime={listing.hostResponseTime}
+          coHosts={listing.coHosts}
+        />
+
+        <ThingsToKnow />
+
+        <MoreStaysNearby listings={listing.nearbyListings} />
       </main>
 
       {/* Footer */}

@@ -8,34 +8,45 @@ generator client {
 }
 
 model Listing {
-  id               String      @id @default(cuid())
+  id               String           @id @default(cuid())
   title            String
   description      String
-  propertyType     String      @default("Entire serviced apartment")
-  location         String      @default("Candolim, Goa, India")
-  rating           Float       @default(4.92)
-  reviewCount      Int         @default(24)
-  pricePerNight    Int         @default(4500)
-  cleaningFee      Int         @default(800)
-  serviceFee       Int         @default(600)
-  maxGuests        Int         @default(3)
-  bedrooms         Int         @default(1)
-  beds             Int         @default(1)
-  bathrooms        Float       @default(1)
-  isSuperhost      Boolean     @default(true)
-  hostName         String      @default("Mirashya")
+  propertyType     String           @default("Entire serviced apartment in Candolim, India")
+  location         String           @default("Candolim, Goa, India")
+  rating           Float            @default(4.95)
+  reviewCount      Int              @default(19)
+  pricePerNight    Int              @default(5699)
+  totalStayPrice   Int              @default(28499)
+  stayNights       Int              @default(5)
+  cleaningFee      Int              @default(800)
+  serviceFee       Int              @default(600)
+  maxGuests        Int              @default(3)
+  bedrooms         Int              @default(1)
+  beds             Int              @default(1)
+  bathrooms        Float            @default(1)
+  isSuperhost      Boolean          @default(true)
+  isGuestFavourite Boolean          @default(true)
+  hostName         String           @default("Mirashya Homes")
   hostAvatar       String
   hostBio          String?
-  hostJoined       String      @default("March 2021")
-  hostResponseRate String      @default("100%")
-  hostResponseTime String      @default("within an hour")
-  lat              Float       @default(15.5177)
-  lng              Float       @default(73.7626)
+  hostJoined       String           @default("2 years hosting")
+  hostReviewsCount Int              @default(1463)
+  hostRating       Float            @default(4.68)
+  hostYears        Int              @default(2)
+  hostBorn         String           @default("Born in the 80s")
+  hostSchool       String           @default("NICMAR GOA")
+  hostResponseRate String           @default("100%")
+  hostResponseTime String           @default("within an hour")
+  lat              Float            @default(15.5177)
+  lng              Float            @default(73.7626)
   photos           Photo[]
+  rooms            Room[]
   amenities        Amenity[]
   reviews          Review[]
-  createdAt        DateTime    @default(now())
-  updatedAt        DateTime    @updatedAt
+  coHosts          CoHost[]
+  nearbyListings   NearbyListing[]
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
 }
 
 model Photo {
@@ -44,9 +55,18 @@ model Photo {
   listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
   url       String
   alt       String
-  category  String   // e.g. "Living room 1", "Living room 2", "Full kitchen", "Bedroom", "Full bathroom", "Gym", "Exterior", "Pool", "Additional photos"
+  category  String
   caption   String?
   order     Int      @default(0)
+}
+
+model Room {
+  id        String   @id @default(cuid())
+  listingId String
+  listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  name      String
+  detail    String
+  photoUrl  String
 }
 
 model Amenity {
@@ -64,14 +84,35 @@ model Review {
   listingId          String
   listing            Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
   authorName         String
-  authorAvatar       String
+  authorAvatar       String?
+  authorInitial      String?
+  authorTenure       String
   date               String
   rating             Int      @default(5)
   comment            String
   cleanlinessScore   Float    @default(5.0)
   accuracyScore      Float    @default(5.0)
   communicationScore Float    @default(5.0)
-  locationScore      Float    @default(4.9)
+  locationScore      Float    @default(4.8)
   checkinScore       Float    @default(5.0)
-  valueScore         Float    @default(4.9)
+  valueScore         Float    @default(4.8)
+}
+
+model CoHost {
+  id        String   @id @default(cuid())
+  listingId String
+  listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  name      String
+  avatarUrl String?
+  initial   String?
+}
+
+model NearbyListing {
+  id            String   @id @default(cuid())
+  listingId     String
+  listing       Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  title         String
+  photoUrl      String
+  pricePerNight Int
+  rating        Float
 }
