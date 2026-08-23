@@ -10,6 +10,7 @@ import { Highlights } from '@/components/listing/Highlights';
 import { DescriptionSection } from '@/components/listing/DescriptionSection';
 import { WhereYouSleep } from '@/components/listing/WhereYouSleep';
 import { AmenitiesSection } from '@/components/listing/AmenitiesSection';
+import { AvailabilityCalendar } from '@/components/listing/AvailabilityCalendar';
 import { BookingWidget } from '@/components/listing/BookingWidget';
 import { ReviewsSection } from '@/components/listing/ReviewsSection';
 import { MapSection } from '@/components/listing/MapSection';
@@ -105,6 +106,10 @@ export default function ListingPage({ params }: { params: { id: string } }) {
   const [listing, setListing] = useState<ListingData | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // Shared Date Range State (Default: Oct 18, 2026 - Oct 23, 2026)
+  const [checkInDate, setCheckInDate] = useState<Date | null>(new Date(2026, 9, 18));
+  const [checkOutDate, setCheckOutDate] = useState<Date | null>(new Date(2026, 9, 23));
+
   // Overlay States
   const [isPhotoTourOpen, setIsPhotoTourOpen] = useState(false);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
@@ -146,6 +151,11 @@ export default function ListingPage({ params }: { params: { id: string } }) {
   const handleOpenLightbox = (index: number) => {
     setLightboxIndex(index);
     setIsLightboxOpen(true);
+  };
+
+  const handleDatesChange = (checkIn: Date | null, checkOut: Date | null) => {
+    setCheckInDate(checkIn);
+    setCheckOutDate(checkOut);
   };
 
   const priceText = `₹${listing.totalStayPrice.toLocaleString('en-IN')} for ${listing.stayNights} nights`;
@@ -228,6 +238,14 @@ export default function ListingPage({ params }: { params: { id: string } }) {
             <div id="amenities">
               <AmenitiesSection amenities={listing.amenities} />
             </div>
+
+            {/* Availability Calendar Section (Positioned directly between Amenities and Reviews) */}
+            <AvailabilityCalendar
+              location={listing.location}
+              checkInDate={checkInDate}
+              checkOutDate={checkOutDate}
+              onDatesChange={handleDatesChange}
+            />
           </div>
 
           {/* Right Column (Sticky Booking Widget) */}
@@ -239,6 +257,8 @@ export default function ListingPage({ params }: { params: { id: string } }) {
               rating={listing.rating}
               reviewCount={listing.reviewCount}
               maxGuests={listing.maxGuests}
+              checkInDate={checkInDate}
+              checkOutDate={checkOutDate}
             />
           </div>
         </div>
