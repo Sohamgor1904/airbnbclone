@@ -22,13 +22,15 @@ export const StickySubNav: React.FC<StickySubNavProps> = ({
       const heroElement = document.getElementById('hero-photos');
       if (heroElement) {
         const rect = heroElement.getBoundingClientRect();
-        setIsVisible(rect.bottom < 80);
+        // Visible when user scrolls past bottom of hero photo grid
+        setIsVisible(rect.bottom <= 0);
       } else {
-        setIsVisible(window.scrollY > 450);
+        setIsVisible(window.scrollY > 550);
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -36,7 +38,7 @@ export const StickySubNav: React.FC<StickySubNavProps> = ({
     setActiveTab(tabName);
     const element = document.getElementById(id);
     if (element) {
-      const yOffset = -90;
+      const yOffset = -80;
       const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
       window.scrollTo({ top: y, behavior: 'smooth' });
     }
@@ -45,7 +47,7 @@ export const StickySubNav: React.FC<StickySubNavProps> = ({
   if (!isVisible) return null;
 
   return (
-    <div className="sticky top-0 z-40 w-full border-b border-airbnb-border bg-white shadow-sm transition-all duration-200">
+    <div className="sticky top-0 z-50 w-full border-b border-airbnb-border bg-white shadow-sm transition-all duration-200">
       <div className="mx-auto flex max-w-[1280px] items-center justify-between px-10 py-3">
         {/* Left Tabs */}
         <nav className="flex items-center gap-8 text-sm font-semibold text-airbnb-charcoal">

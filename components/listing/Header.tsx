@@ -5,7 +5,7 @@ import { Search, Globe, Menu, User } from 'lucide-react';
 
 export const Header: React.FC = () => {
   return (
-    <header className="sticky top-0 z-30 w-full border-b border-airbnb-border bg-white px-10 py-4 transition-shadow">
+    <header className="w-full border-b border-airbnb-border bg-white px-10 py-4">
       <div className="mx-auto flex max-w-[1280px] items-center justify-between">
         {/* Logo Asset */}
         <a href="/" className="flex items-center gap-2 cursor-pointer">
