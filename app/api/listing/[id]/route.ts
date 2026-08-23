@@ -1,14 +1,16 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(
   request: Request,
   { params }: { params: { id: string } }
 ) {
   try {
-    const listingId = params.id || 'listing-1';
+    const listingId = params?.id || 'listing-1';
     
-    // Attempt database query
+    // Attempt database query if Prisma Client & DB are initialized
     const listing = await prisma.listing.findUnique({
       where: { id: listingId },
       include: {
@@ -24,10 +26,10 @@ export async function GET(
       return NextResponse.json(listing);
     }
   } catch (error) {
-    console.warn('Database query failed, returning fallback static seed data:', error);
+    console.warn('Database query failed or DATABASE_URL not set, returning static payload:', error);
   }
 
-  // Fallback static data matching database seed if DB is offline or not configured yet
+  // Fallback payload matching database seed
   return NextResponse.json({
     id: 'listing-1',
     title: 'Romantic Jacuzzi 1BHK Candolim | Mirashya UG10',
@@ -155,12 +157,6 @@ export async function GET(
         date: 'January 2024',
         rating: 5,
         comment: 'Amazing stay! The Jacuzzi on the balcony was the highlight of our trip to Goa. Mirashya was super responsive and helpful throughout our stay.',
-        cleanlinessScore: 5.0,
-        accuracyScore: 5.0,
-        communicationScore: 5.0,
-        locationScore: 5.0,
-        checkinScore: 5.0,
-        valueScore: 5.0,
       },
       {
         id: 'r2',
@@ -169,12 +165,6 @@ export async function GET(
         date: 'December 2023',
         rating: 5,
         comment: 'Beautiful property, exact match with the photos! Very clean, excellent wifi for work, and close to all popular spots in Candolim.',
-        cleanlinessScore: 5.0,
-        accuracyScore: 5.0,
-        communicationScore: 5.0,
-        locationScore: 4.8,
-        checkinScore: 5.0,
-        valueScore: 4.9,
       },
       {
         id: 'r3',
@@ -183,12 +173,6 @@ export async function GET(
         date: 'November 2023',
         rating: 5,
         comment: 'One of the best Airbnb experiences in Goa. High speed internet, super cozy bed, and peaceful surroundings. Highly recommended!',
-        cleanlinessScore: 5.0,
-        accuracyScore: 5.0,
-        communicationScore: 5.0,
-        locationScore: 5.0,
-        checkinScore: 5.0,
-        valueScore: 5.0,
       },
     ],
   });
