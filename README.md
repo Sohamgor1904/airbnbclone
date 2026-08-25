@@ -1,143 +1,248 @@
-# Airbnb Listing Page & Overlays Clone
+# 🏡 Airbnb Listing Clone — Full-Stack Web Application
 
-A pixel-perfect, behavior-perfect clone of the Airbnb property listing page ("Romantic Jacuzzi 1BHK Candolim | Mirashya UG10") and its two interactive overlay views (**Photo Tour** & **Lightbox**), built with Next.js 14, Tailwind CSS, Framer Motion, Prisma ORM, and Neon PostgreSQL.
-
-Reference Target: [https://airbnb-clone-umber-two.vercel.app](https://airbnb-clone-umber-two.vercel.app)
+A pixel-perfect, behavior-perfect full-stack clone of a single Airbnb listing page and its interactive overlays, built with **Next.js 14 (App Router)**, **TypeScript**, **Tailwind CSS**, **Framer Motion**, **Prisma ORM**, and a serverless **Neon PostgreSQL** database.
 
 ---
 
-## Features & Views
+## 🌐 Live Production & Repository Links
 
-1. **Listing Page (`/listing/[id]`)**
-   - **Header**: Airbnb logo, search bar pill (Anywhere · Any week · Add guests), user menu button.
-   - **Title Block**: Property name, rating summary (4.92 ★), review count, Superhost badge, location link, Share and Save buttons.
-   - **Hero 5-Photo Grid**: 1 main photo on left, 4 photos on right grid, with hover zoom transitions and floating "Show all photos" button.
-   - **Host & Specs Section**: Property stats (3 guests · 1 bedroom · 1 bed · 1 bath), host avatar, Superhost status.
-   - **Highlights & Offer Banner**: Discount banner ("Get 10% off your next stay"), key feature rows (Self check-in, Dedicated workspace, Wifi).
-   - **Description Section**: Property overview with inline "Show more >" modal dialog.
-   - **Amenities Section**: Icon grid of top 10 amenities + "Show all amenities" modal dialog.
-   - **Booking Widget**: Sticky desktop reservation card with price per night, check-in/checkout dates, guest selector dropdown, Reserve button, and price breakdown.
-   - **Reviews Section**: Rating score summary, category score progress meters, 2-column review cards.
-   - **Map Section**: Interactive Leaflet + OpenStreetMap view centered on Candolim, Goa with custom location marker and neighborhood description.
-   - **Footer**: Full Airbnb desktop footer with links, currency switcher, and copyright.
-
-2. **Photo Tour Overlay**
-   - Opened via "Show all photos" or clicking any hero photo.
-   - Sticky top bar with back arrow button and category tab pills ("Living room 1", "Living room 2", "Full kitchen", "Bedroom", "Full bathroom", "Gym", "Exterior", "Pool", "Additional photos").
-   - Grouped scrollable image sections with smooth auto-scroll on tab click.
-   - Clicking any photo opens the Lightbox overlay with target index active.
-
-3. **Lightbox Overlay**
-   - Full-screen single photo viewer modal with dark backdrop.
-   - Previous (`←`) and Next (`→`) arrow navigation buttons and keyboard arrow key support (Left/Right arrow, Esc to close).
-   - Image counter display (`X / N`) and photo category caption.
-   - Accessible focus trap and ARIA dialog semantics (`role="dialog"`, `aria-modal="true"`).
+- **Live Production URL**: [https://airbnbclone-lime.vercel.app](https://airbnbclone-lime.vercel.app)
+- **GitHub Repository**: [https://github.com/Sohamgor1904/airbnbclone](https://github.com/Sohamgor1904/airbnbclone)
+- **System Architecture Diagram**: [`docs/architecture_diagram.png`](docs/architecture_diagram.png)
 
 ---
 
-## Tech Stack
+## 🎯 Overview & Key Objectives
 
-- **Framework**: Next.js 14+ (App Router) with TypeScript
-- **Styling**: Tailwind CSS
-- **Animations**: Framer Motion
-- **Icons**: Lucide React
-- **Map**: Leaflet + React-Leaflet + OpenStreetMap
-- **Database**: PostgreSQL (Neon free-tier) via Prisma ORM
-- **API**: Next.js API Routes (`GET /api/listing/[id]`)
-- **Deployment Target**: Vercel Free Hobby Tier
+The goal of this project was to construct an exact, production-grade clone of an Airbnb property listing page for desktop viewports (`≥1280px`). Visual fidelity, micro-interactions, layout precision, color tokens (`#FF385C`, `#222222`, `#717171`), typography, accessibility, and backend database connectivity were prioritized to match real-world production standards.
+
+### Core Features & Views Built
+1. **Listing Page**: Comprehensive property page with full section layout (Header, Hero Grid, Sticky Sub-Nav, Host Card, Highlights, Description, Where You'll Sleep, Amenities, Availability Calendar, Booking Widget, Reviews, Map, Meet Your Host, Things to Know, More Stays Nearby, and Footer).
+2. **Photo Tour Overlay**: Full-screen modal gallery organizing property photos into category groups (e.g., Living room, Bedroom, Bathroom, Outdoor) with sticky tab navigation.
+3. **Lightbox Overlay**: Single-photo viewer overlay with smooth transitions, image index counters, prev/next navigation controls, keyboard arrow key navigation (`←` / `→`), `Esc` key close handling, and focus trapping.
 
 ---
 
-## Repository Structure
+## 🛠️ Tech Stack & Technical Rationale
+
+| Layer | Technology | Rationale & Usage |
+| :--- | :--- | :--- |
+| **Framework** | **Next.js 14 (App Router)** | Provides React 18 server components, client components, and serverless API route handlers in a unified deployment. |
+| **Language** | **TypeScript** | Enforces strict static type safety across database models, API responses, and UI props. |
+| **Styling** | **Tailwind CSS** | Used for utility-first styling matching Airbnb's exact typography, spacing scale, colors, and borders. |
+| **Animations** | **Framer Motion** | Powers smooth modal overlay enter/exit transitions, image carousel navigation, and tab underlines. |
+| **Icons** | **Lucide React** | Provides crisp, accessible vector icons matching Airbnb's design system. |
+| **Maps** | **React Leaflet + OpenStreetMap** | Open-source, free interactive tile map rendering without external paid Google Maps API keys. |
+| **ORM** | **Prisma ORM (v5)** | Strongly typed database client managing relational models, eager loading, and seed scripts. |
+| **Database** | **Neon PostgreSQL** | Serverless cloud PostgreSQL database hosting real listing data with connection pooling and SSL encryption. |
+| **Deployment** | **Vercel Production (Hobby Tier)** | Continuous deployment target auto-building Prisma client binaries during `postinstall`. |
+
+---
+
+## 🏗️ Detailed Breakdown: What We Built & Why
+
+### 1. Header & Search Pill (`Header.tsx`)
+- **Implementation**: Features the official Airbnb logo asset (`/public/logo.png`), search pill bar (`Anywhere | Any week | Add guests` with pink magnifier icon), and right user menu buttons (`Airbnb your home`, globe icon, and avatar user pill).
+- **Design Decision**: Positioned with normal document flow so it scrolls away naturally as the user moves down the page, avoiding awkward header overlaps.
+
+### 2. Sticky Sub-Navigation Bar (`StickySubNav.tsx`)
+- **Implementation**: Positioned `sticky top-0 z-50`. Uses a passive scroll observer checking the bounding rectangle of the hero photo grid (`#hero-photos`).
+- **Behavior**: Activates automatically as soon as the user scrolls past the main 5-photo grid. Displays smooth-scroll tab links (`Photos`, `Amenities`, `Reviews`, `Location`) with active tab underline indicators on the left, and pricing summary (`₹28,499 for 5 nights`, `★ 4.95 · 19 reviews`) with a pink `Reserve` CTA button on the right.
+
+### 3. Hero 5-Photo Grid (`HeroPhotoGrid.tsx`)
+- **Implementation**: Desktop 5-photo asymmetric mosaic grid featuring a large lead photo on the left and a 2x2 grid on the right.
+- **Interactivity**: Includes a bottom-right "Show all photos" button with grid icon that triggers the `PhotoTour` modal overlay. Clicking any photo directly opens the `PhotoTour`.
+
+### 4. Property Specifications & Host Card (`HostSection.tsx` & `TitleSection.tsx`)
+- **Implementation**: Title block displaying property title (`Candolim Villa`), star rating (`4.95`), review count (`19 reviews`), Superhost status, and location (`Candolim, Goa, India`).
+- **Specs**: Host avatar, host name (`Hosted by Mirashya Homes`), Superhost badge, and guest capacity line (`8 guests · 3 bedrooms · 4 beds · 3 baths`).
+
+### 5. "Where You'll Sleep" Room Cards (`WhereYouSleep.tsx`)
+- **Implementation**: 2-column card layout displaying room photos, room names (`Bedroom`, `Living room`), and bed arrangements (`1 double bed`, `1 sofa`).
+
+### 6. Amenities Section & Modal (`AmenitiesSection.tsx`)
+- **Implementation**: Displays the top-10 default amenities in a 2-column icon grid (Wi-Fi, Free parking, Private pool, Air conditioning, Kitchen, etc.). Includes an outlined "Show all 32 amenities" button launching a full-category amenities modal.
+
+### 7. Availability Calendar (`AvailabilityCalendar.tsx`)
+- **Implementation**: Renders a dedicated availability calendar section displaying the 2-month check-in and checkout date range (`18 Oct 2026 - 23 Oct 2026` in `Candolim`), matching the reference visual asset layout.
+
+### 8. Sticky Booking Widget (`BookingWidget.tsx`)
+- **Implementation**: Positioned `sticky top-28` in the right column. Includes price per night (`₹5,699 / night`), star rating header, date range input box, guest selector dropdown, pink `Reserve` button, and explicit cost breakdown calculation:
+  - Base price: `₹5,699 × 5 nights = ₹28,495`
+  - Cleaning fee: `₹1,200`
+  - Airbnb service fee: `₹2,450`
+  - **Total before taxes**: `₹32,145`
+
+### 9. Reviews Section Overhaul (`ReviewsSection.tsx`)
+- **Implementation**: Rebuilt to match reference specifications:
+  - **Top Block**: Large `4.95` numeral flanked by leaf wreath icons, "Guest favourite" badge, and "How reviews work" modal trigger.
+  - **6-Metric Breakdown Grid**: Bar charts and scores for Overall rating (5.0), Cleanliness (5.0), Accuracy (5.0), Check-in (5.0), Communication (5.0), Location (4.8), and Value (4.8).
+  - **Category Pills**: Horizontally scrollable tag pills (`🛋️ Comfort 6`, `✅ Accuracy 5`, `♨️ Hot tub 5`, `🍰 Condition 4`, `🎁 Hospitality 8`, `🛍️ Cleanliness 4`, `🎂 Amenities 2`).
+  - **Review Cards**: 2-column grid of reviewer cards with photo/initial avatars, tenure, review dates, and truncated text with "Show more".
+
+### 10. Map Section & Neighbourhood Highlights (`MapSection.tsx`)
+- **Implementation**: Interactive OpenStreetMap map centered on Candolim, Goa (`lat: 15.5177, lng: 73.7626`).
+- **Features**: Top-left search magnifier button, top-right zoom `+`/`-` controls, central black circular pin with house icon, caption line (`Exact location will be provided after booking`), and a separate "Neighbourhood highlights" block below the map.
+
+### 11. Meet Your Host (`MeetYourHost.tsx`)
+- **Implementation**: Host profile box with verified check badge, stats (1,463 Reviews, 4.68★ Rating, 2 Years hosting), "Born in the 80s", and "Where I went to school: NICMAR GOA".
+- **Co-Hosts Grid**: 8 co-hosts with photo avatars or initial circles (`S`, `A`), host details (100% response rate, responds within an hour), "Message host" button, and payment safety note.
+
+### 12. Things to Know (`ThingsToKnow.tsx`)
+- **Implementation**: 3-column policy section covering Cancellation policy (calendar-x icon), House rules (key icon), and Safety & property disclosures (shield icon) with interactive "Learn more" modals.
+
+### 13. More Stays Nearby (`MoreStaysNearby.tsx`)
+- **Implementation**: 5-card horizontal carousel row displaying nearby property photos, titles, prices, and star ratings with page counter (`2 / 2`) and navigation chevron buttons.
+
+### 14. Full-Screen Overlays (`PhotoTour.tsx` & `Lightbox.tsx`)
+- **Photo Tour**: Portal modal covering 100% of the viewport. Features sticky tab category pills (`All photos`, `Living room`, `Bedroom`, `Bathroom`, `Exterior`) and 2-column photo layout.
+- **Lightbox**: Single-photo viewer modal triggered by clicking any photo in the Photo Tour. Includes photo index counter (`X of Y`), image caption, left/right chevron buttons, keyboard arrow navigation (`←`/`→`), `Esc` key exit, and focus trapping.
+
+---
+
+## 🗄️ Database Schema & Prisma Architecture
+
+The application connects to a hosted **Neon PostgreSQL** serverless instance. Relational schemas are defined in [`prisma/schema.prisma`](prisma/schema.prisma):
+
+```prisma
+model Listing {
+  id               String   @id @default(cuid())
+  title            String
+  description      String
+  propertyType     String
+  location         String
+  rating           Float
+  reviewCount      Int
+  pricePerNight    Float
+  totalStayPrice   Float
+  stayNights       Int
+  cleaningFee      Float
+  serviceFee       Float
+  maxGuests        Int
+  bedrooms         Int
+  beds             Int
+  bathrooms        Int
+  isSuperhost      Boolean
+  isGuestFavourite Boolean
+
+  // Host Details
+  hostName         String
+  hostAvatar       String
+  hostJoined       String
+  hostReviewsCount Int
+  hostRating       Float
+  hostYears        Int
+  hostBorn         String
+  hostSchool       String
+  hostResponseRate String
+  hostResponseTime String
+
+  // Coordinates
+  lat Float
+  lng Float
+
+  // Relations
+  photos         Photo[]
+  rooms          Room[]
+  amenities      Amenity[]
+  reviews        Review[]
+  coHosts        CoHost[]
+  nearbyListings NearbyListing[]
+}
+```
+
+### Serverless Build Optimization
+To ensure deployment on Vercel runs without database connection lockup during static compilation:
+1. `package.json` includes `"postinstall": "prisma generate"` and `"build": "prisma generate && next build"`.
+2. `app/api/listing/[id]/route.ts` exports `export const dynamic = 'force-dynamic'` and implements try-catch fallback data so builds compile smoothly while production endpoints serve live data from Neon PostgreSQL.
+
+---
+
+## 📁 Repository Folder Structure
 
 ```
+airbnbclone/
 ├── app/
-│   ├── api/listing/[id]/route.ts  # REST API route handler (reads DB via Prisma)
-│   ├── listing/[id]/page.tsx      # Listing page component
-│   ├── globals.css                # Global CSS & Tailwind imports
-│   ├── layout.tsx                 # Root layout with desktop constraint
-│   └── page.tsx                   # Default root page
+│   ├── api/listing/[id]/route.ts    # REST endpoint serving listing data from Neon DB
+│   ├── listing/[id]/page.tsx        # Main Airbnb listing page orchestrating components
+│   ├── layout.tsx                   # Global layout & metadata
+│   ├── page.tsx                     # Root redirect to /listing/listing-1
+│   └── globals.css                  # Global Tailwind CSS imports & custom styles
 ├── components/
-│   ├── ui/                        # Atomic UI components (Button, Modal)
-│   ├── listing/                   # Section components (Header, HeroGrid, Host, Amenities, etc.)
-│   └── overlays/                  # Overlays (PhotoTour, Lightbox)
-├── prisma/
-│   ├── schema.prisma              # PostgreSQL schema (Listing, Photo, Amenity, Review)
-│   └── seed.ts                    # Prisma seed script
+│   ├── listing/                     # Section components
+│   │   ├── Header.tsx               # Top logo header with search pill
+│   │   ├── StickySubNav.tsx         # Sticky navigation bar (Photos, Amenities, Reviews, Location)
+│   │   ├── TitleSection.tsx         # Property title, rating, specs
+│   │   ├── HeroPhotoGrid.tsx        # 5-photo grid layout
+│   │   ├── HostSection.tsx          # Host avatar & property specifications
+│   │   ├── Highlights.tsx           # Special property highlights
+│   │   ├── DescriptionSection.tsx   # Truncated description with modal
+│   │   ├── WhereYouSleep.tsx        # Room & bed cards
+│   │   ├── AmenitiesSection.tsx     # Top-10 grid & full amenities modal
+│   │   ├── AvailabilityCalendar.tsx # 2-month availability calendar image section
+│   │   ├── BookingWidget.tsx        # Sticky price & reservation card
+│   │   ├── ReviewsSection.tsx       # 6-metric rating breakdown & review cards
+│   │   ├── MapSection.tsx           # Leaflet OpenStreetMap view & neighbourhood highlights
+│   │   ├── MeetYourHost.tsx         # Host card, co-hosts grid & response details
+│   │   ├── ThingsToKnow.tsx         # 3-column policy section with modals
+│   │   ├── MoreStaysNearby.tsx      # Nearby listings carousel
+│   │   └── Footer.tsx               # Footer link groups & copyright
+│   └── overlays/
+│       ├── PhotoTour.tsx            # Full-screen photo gallery portal modal
+│       └── Lightbox.tsx             # Single-photo viewer with keyboard arrow navigation
+├── docs/
+│   ├── architecture_diagram.png     # System architecture diagram (draw.io format)
+│   └── TECH_STACK.md                # Technical stack summary
 ├── lib/
-│   └── prisma.ts                  # Prisma Client singleton
-├── agents/
-│   └── subagent_config.json       # AI sub-agent & skill configurations
-├── architecture_diagram.png       # Production scaling architecture diagram (Image)
-├── architecture_diagram.svg       # Architecture diagram source SVG
-├── PROMPT_LOG.md                  # Chronological prompt sequence log
-├── README.md                      # Project documentation
-├── .env.example                   # Environment variable template
-└── tailwind.config.ts             # Airbnb design tokens & configuration
+│   └── prisma.ts                    # Singleton Prisma client instance
+├── prisma/
+│   ├── schema.prisma                # Relational PostgreSQL models
+│   └── seed.ts                      # Seed script for Neon DB
+├── public/                          # Image assets (logo.png, calendar_section.png, photos)
+├── .env.example                     # Environment variable template
+├── .gitignore                       # Git ignore file
+├── PROMPT_LOG.md                    # Detailed log of prompt interactions
+└── README.md                        # Master project documentation
 ```
 
 ---
 
-## Local Setup & Running Instructions
+## ⚡ How to Run Locally
 
 ### 1. Prerequisites
-- Node.js >= 18.0.0
-- npm or yarn
+- Node.js `≥18.17.0`
+- npm `≥9.0.0`
 
-### 2. Installation
+### 2. Clone & Install Dependencies
 ```bash
+git clone https://github.com/Sohamgor1904/airbnbclone.git
+cd airbnbclone
 npm install
 ```
 
-### 3. Database Setup (Neon PostgreSQL)
-1. Create a free PostgreSQL database on [Neon.tech](https://neon.tech) (or any Postgres instance).
-2. Copy `.env.example` to `.env.local`:
-   ```bash
-   cp .env.example .env.local
-   ```
-3. Update `DATABASE_URL` in `.env.local` with your database connection string:
-   ```env
-   DATABASE_URL="postgresql://user:password@your-neon-hostname.tech/neondb?sslmode=require"
-   ```
+### 3. Environment Setup
+Create a `.env` file in the root directory:
+```env
+DATABASE_URL="postgresql://neondb_owner:npg_sample123@ep-sample-123456.us-east-2.aws.neon.tech/neondb?sslmode=require"
+```
 
-### 4. Prisma Schema Migration & Seeding
-Run Prisma commands to generate the client and seed the database:
+### 4. Database Setup & Seeding
+Generate Prisma Client binaries and seed mock data into PostgreSQL:
 ```bash
-# Push schema to database
-npx prisma db push
-
-# Seed database with listing photos, amenities, host data, and reviews
+npx prisma generate
 npx prisma db seed
 ```
 
-### 5. Run Development Server
+### 5. Start Development Server
 ```bash
 npm run dev
 ```
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
 
 ---
 
-## Production Scaling Architecture
+## ✅ Quality & Verification Summary
 
-An architectural diagram illustrating production scaling for an Airbnb-scale marketplace is provided in **`architecture_diagram.png`**.
-
-Key Components:
-1. **Client & Global Edge CDN Layer**: Next.js 14 frontend served globally via Vercel Edge / CloudFront CDN with static asset caching.
-2. **API Gateway Layer**: Kong/Nginx API Gateway providing SSL termination, rate limiting, and CORS handling.
-3. **Backend Microservices Layer**: Next.js Node.js server cluster handling Listing Service, Booking & Availability Engine, Search Service, and Reviews Aggregation.
-4. **Data Storage & Caching Layer**: Neon PostgreSQL primary database, Neon read replicas for scalable query distribution, Redis cluster for listing caching, and Elasticsearch for geo-bounding box search.
-
----
-
-## Deliverables Checklist
-
-- [x] Listing Page, Photo Tour Overlay, Lightbox Overlay implemented with pixel & behavioral parity
-- [x] Next.js 14 App Router + TypeScript + Tailwind CSS + Framer Motion
-- [x] Prisma ORM schema + Neon PostgreSQL seeding script (`prisma/seed.ts`)
-- [x] `GET /api/listing/[id]` API handler
-- [x] Desktop-only constraint (≥1280px viewport)
-- [x] Accessible focus management, Esc key overlay closing, and Left/Right keyboard navigation in Lightbox
-- [x] High-resolution **`architecture_diagram.png`** image file
-- [x] Sub-agent configuration file (`agents/subagent_config.json`)
-- [x] Chronological prompt log (`PROMPT_LOG.md`)
+- **Automated Validation**: Passed `npm run lint` (0 errors, 0 warnings) and `npm run build` (clean TypeScript compilation).
+- **Visual & Interaction Parity**: Checked side-by-side against reference screenshots across desktop viewports (`≥1280px`).
+- **Production Deployment**: Live and operational on Vercel at [https://airbnbclone-lime.vercel.app](https://airbnbclone-lime.vercel.app).
