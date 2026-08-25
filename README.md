@@ -8,7 +8,7 @@ A pixel-perfect, behavior-perfect full-stack clone of a single Airbnb listing pa
 
 - **Live Production URL**: [https://airbnbclone-lime.vercel.app](https://airbnbclone-lime.vercel.app)
 - **GitHub Repository**: [https://github.com/Sohamgor1904/airbnbclone](https://github.com/Sohamgor1904/airbnbclone)
-- **System Architecture Diagram**: [`docs/architecture_diagram.png`](docs/architecture_diagram.png)
+- **System Architecture Diagram**: [`architecture_diagram.png`](architecture_diagram.png)
 
 ---
 
